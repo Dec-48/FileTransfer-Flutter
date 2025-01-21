@@ -3,9 +3,12 @@ import 'package:file_transfer/pages/HomePage.dart';
 import 'package:file_transfer/pages/UploadPage.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+
   runApp(const MainApp());
 }
+
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

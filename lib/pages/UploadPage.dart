@@ -1,9 +1,6 @@
-
-import 'dart:typed_data';
-
 import 'package:file_picker/file_picker.dart';
+import 'package:file_transfer/service/client_api.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class Uploadpage extends StatefulWidget {
   const Uploadpage({super.key});
@@ -15,8 +12,8 @@ class Uploadpage extends StatefulWidget {
 class _UploadpageState extends State<Uploadpage> {
 
   PlatformFile? selectedFile; 
-  String testingStr = "Default";
-  
+  ClientApi client = ClientApi();
+
   Future pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.any
@@ -35,35 +32,10 @@ class _UploadpageState extends State<Uploadpage> {
   }
 
   Future<void> uploadFile() async {
-    Uri uri = Uri.parse("http://192.168.1.115:8080/api/upload");
-    
-    Uint8List fileByte = selectedFile!.bytes!;
-    String fileName = selectedFile!.name;
-    
-    http.MultipartRequest req = http.MultipartRequest("POST", uri);
-
-    req.files.add(http.MultipartFile.fromBytes(
-      "upFile",
-      fileByte,
-      filename: fileName
-    ));
-
-    http.StreamedResponse response = await req.send();
-    print(response.statusCode);
-
+    client.uploadFile(selectedFile);
     setState(() {
       selectedFile = null;
     });
-  }
-
-  Future<void> callGet() async {
-    Uri uri = Uri.parse("http://192.168.1.115:8080/api/upload");
-    http.Response res = await http.get(uri);
-    if (res.statusCode == 202){
-      print("accepted");
-    } else {
-      print("fail !!");
-    }
   }
 
   @override
@@ -122,12 +94,11 @@ class _UploadpageState extends State<Uploadpage> {
             ElevatedButton(
               onPressed: (selectedFile != null) ? () {
                 uploadFile();
-                // callGet();
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //       content: Text("Uploading: ${selectedFile!.name}"),
-                //   ),
-                // );  
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text("Uploading: ${selectedFile!.name}"),
+                  ),
+                );  
               } : null,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),

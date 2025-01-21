@@ -1,12 +1,18 @@
+import 'package:file_transfer/service/client_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Downloadpage extends StatelessWidget {
-  final List<Map<String, String>> fileList = [
-    {"name": "file1.pdf", "size": "2.5 MB"},
-    {"name": "file2.jpg", "size": "1.2 MB"},
-    {"name": "file3.zip", "size": "8.7 MB"},
-  ];
+  ClientApi client = ClientApi();
   Downloadpage({super.key});
+
+  Future<List<dynamic>> fetchListFile() async {
+    return await client.getListFiles();
+  }
+
+  Future<void> deleteFile() async {
+    client.
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,47 +20,71 @@ class Downloadpage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Download fileList"),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.all(16.0),
-        itemCount: fileList.length,
-        itemBuilder: (context, index) {
-          final file = fileList[index];
-          final fileName = file["name"]!;
-          final fileListize = file["size"]!;
+      body: FutureBuilder<List<dynamic>>(
+        future: fetchListFile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator());
+          } 
+          else if (snapshot.hasError){
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } 
+          else {
+            List<dynamic> fileList = snapshot.data!;
+            return ListView.builder(
+              padding: EdgeInsets.all(16.0),
+              itemCount: fileList.length,
+              itemBuilder: (context, index) {
+                final file = fileList[index];
+                final fileName = file[0];
+                final fileListize = file[1] + " MB";
+            
+                return Slidable(
+                  endActionPane: ActionPane(
+                    children: [
+                      SlidableAction(
+                        onPressed: ,
+                      )
+                    ],
+                  ),
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    child: ListTile(
+                      leading: _buildFileIcon(fileName),
+                      title: Text(
+                        fileName,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        fileListize,
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      trailing: ElevatedButton.icon(
+                        onPressed: () {
+                          // Add download logic here
+                        },
+                        icon: Icon(Icons.download),
+                        label: Text("Download"),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 2,
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
 
-          return Card(
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              leading: _buildFileIcon(fileName),
-              title: Text(
-                fileName,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                fileListize,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-              trailing: ElevatedButton.icon(
-                onPressed: () {
-                  // Add download logic here
-                },
-                icon: Icon(Icons.download),
-                label: Text("Download"),
-                style: ElevatedButton.styleFrom(
-                  elevation: 2,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                ),
-              ),
-            ),
-          );
-        },
+          }
+        }
       ),
     );
   }
