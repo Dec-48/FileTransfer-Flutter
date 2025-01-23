@@ -5,8 +5,8 @@ import "package:file_picker/file_picker.dart";
 import "package:http/http.dart" as http;
 
 class ClientApi {
-  final Uri uploadApi = Uri.parse("http://192.168.1.115:8080/api/upload");
-  final Uri downloadApi = Uri.parse("http://192.168.1.115:8080/api/download");
+  final Uri uploadApi = Uri.parse("http://localhost:8080/api/upload");
+  final Uri downloadApi = Uri.parse("http://localhost:8080/api/download");
 
   Future<void> uploadFile(PlatformFile? selectedFile) async {
     Uint8List fileByte = selectedFile!.bytes!;
@@ -37,6 +37,5 @@ class ClientApi {
     }
   }
 
-  Future<void> deleteB()
 
 }

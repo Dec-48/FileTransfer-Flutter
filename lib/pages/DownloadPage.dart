@@ -2,16 +2,30 @@ import 'package:file_transfer/service/client_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class Downloadpage extends StatelessWidget {
-  ClientApi client = ClientApi();
+class Downloadpage extends StatefulWidget {
+
   Downloadpage({super.key});
+
+  @override
+  State<Downloadpage> createState() => _DownloadpageState();
+}
+
+class _DownloadpageState extends State<Downloadpage> {
+  ClientApi client = ClientApi();
+
+  List<dynamic> fileList = [];
+
+  List<String> deleteList = [];
 
   Future<List<dynamic>> fetchListFile() async {
     return await client.getListFiles();
   }
 
-  Future<void> deleteFile() async {
-    client.
+  void deleteFile(int index) {
+    setState(() {
+      deleteList.add(fileList[index][0]);
+      fileList.removeAt(index);
+    });
   }
 
   @override
@@ -30,7 +44,9 @@ class Downloadpage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } 
           else {
-            List<dynamic> fileList = snapshot.data!;
+            if (fileList.isEmpty){
+              fileList = snapshot.data!;
+            }
             return ListView.builder(
               padding: EdgeInsets.all(16.0),
               itemCount: fileList.length,
@@ -38,12 +54,15 @@ class Downloadpage extends StatelessWidget {
                 final file = fileList[index];
                 final fileName = file[0];
                 final fileListize = file[1] + " MB";
-            
                 return Slidable(
                   endActionPane: ActionPane(
+                    extentRatio: 0.25,
+                    motion: StretchMotion(),
                     children: [
                       SlidableAction(
-                        onPressed: ,
+                        onPressed: (context) => deleteFile(index),
+                        icon: Icons.delete_forever,
+                        backgroundColor: Colors.red,
                       )
                     ],
                   ),
