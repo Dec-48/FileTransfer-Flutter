@@ -36,7 +36,7 @@ class _DownloadpageState extends State<Downloadpage> {
     client.deleteFile(fileList[index][0]);
     setState(() {
       deleteList.add(fileList[index][0]);
-      fileList.removeAt(index);
+      // fileList.removeAt(index);
     });
   }
 
