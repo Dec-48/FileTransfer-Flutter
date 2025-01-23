@@ -7,6 +7,8 @@ import "package:http/http.dart" as http;
 class ClientApi {
   final Uri uploadApi = Uri.parse("http://localhost:8080/api/upload");
   final Uri downloadApi = Uri.parse("http://localhost:8080/api/download");
+  final String deletePathApi = "http://localhost:8080/api/delete";
+  // final Uri deleteApi = Uri.parse("http://localhost:8080/api/delete");
 
   Future<void> uploadFile(PlatformFile? selectedFile) async {
     Uint8List fileByte = selectedFile!.bytes!;
@@ -37,5 +39,17 @@ class ClientApi {
     }
   }
 
+  Future<void> deleteFile(String name) async {
+    final Uri deleteApi = Uri.parse("$deletePathApi/$name");
+    try {
+      http.Response response = await http.get(deleteApi);
+      String body = response.body;
+      int statusCode = response.statusCode;
+      print("$statusCode : $body");
+    } catch (e) {
+      print("Can't delete");
+      throw e.toString();
+    }
+  }
 
 }
