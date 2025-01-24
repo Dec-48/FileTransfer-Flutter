@@ -6,13 +6,14 @@ import "package:file_picker/file_picker.dart";
 import "package:file_saver/file_saver.dart";
 import "package:flutter/foundation.dart";
 import "package:http/http.dart" as http;
+import "package:path_provider/path_provider.dart" as path_provider;
 import 'package:logger/logger.dart';
 
 class ClientApi {
   Logger logger = Logger();
-  final String uploadPathApi = "http://---YOUR-API----:/api/upload";
-  final String downloadPathApi = "http://---YOUR-API----:/api/download";
-  final String deletePathApi = "http://---YOUR-API----:/api/delete";
+  final String uploadPathApi = "http://192.168.1.111:8080/api/upload";
+  final String downloadPathApi = "http://192.168.1.111:8080/api/download";
+  final String deletePathApi = "http://192.168.1.111:8080/api/delete";
   bool dowloadPermit = false;
 
   Future<void> uploadFile(PlatformFile? selectedFile) async {
@@ -86,6 +87,27 @@ class ClientApi {
     }
   }
 
+
+
+  // Future<void> downloadFile(String fileName) async {
+  //     final Uri downloadApi = Uri.parse("$downloadPathApi/$fileName");
+  //     final response = await http.get(downloadApi);
+
+  //     try {
+  //       if (response.statusCode == 202){
+  //         final directory = await path_provider.getDownloadsDirectory();
+  //         final filePath = '${directory!.path}/$fileName';
+  //         final file = File(filePath);
+  //         await file.writeAsBytes(response.bodyBytes);
+  //         logger.i('File downloaded: $filePath');
+  //       } else {
+  //         logger.e('Failed to download file: ${response.statusCode}');
+  //       }
+  //     } catch (e) {
+  //       logger.e("error occur on downloadFIle");
+  //       throw e.toString();
+  //     }
+  // }
 
   Future<void> fileSaver(String fileName) async {
     try {
