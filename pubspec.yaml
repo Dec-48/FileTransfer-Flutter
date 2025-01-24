@@ -12,6 +12,10 @@ dependencies:
   file_picker :
   http :
   flutter_slidable: ^3.1.2
+  file_saver:
+  path_provider:
+  logger:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -15,6 +15,7 @@ windows/
 linux/
 web/
 ios/
+build/
 .vscode/
 
 

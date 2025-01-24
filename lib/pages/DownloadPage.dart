@@ -92,9 +92,7 @@ class _DownloadpageState extends State<Downloadpage> {
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           trailing: ElevatedButton.icon(
-                            onPressed: () {
-                              // Add download logic here
-                            },
+                            onPressed: () => client.fileSaver(fileList[index][0]),
                             icon: Icon(Icons.download),
                             label: Text("Download"),
                             style: ElevatedButton.styleFrom(
