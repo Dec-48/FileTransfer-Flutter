@@ -14,4 +14,9 @@ I just wanted to experiment with an older tech stack, but it turned out to be mu
 Okay, I gotta be honest, I didn't do good on the security . File locking is about all I got covered for downloads and deletes.
 [https://github.com/Dec-48/FileTransfer-SpringBoot_Prototype]
 
+## Disclaimer
+I found a WebRTC file transfer app on GitHub and the Play Store. Seeing it published 
+there gives me some ideas on how I might improve the performance and security of my own project 
+
+
 
