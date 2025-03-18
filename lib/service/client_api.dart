@@ -6,7 +6,6 @@ import "package:file_picker/file_picker.dart";
 import "package:file_saver/file_saver.dart";
 import "package:flutter/foundation.dart";
 import "package:http/http.dart" as http;
-import "package:path_provider/path_provider.dart" as path_provider;
 import 'package:logger/logger.dart';
 
 class ClientApi {
@@ -32,9 +31,9 @@ class ClientApi {
         http.StreamedResponse response = await req.send();
         String? body = response.reasonPhrase;
         int statusCode = response.statusCode;
-        logger.i("$statusCode : $body");
+        // logger.i("$statusCode : $body");
       } catch (e) {
-        logger.i(e.toString());
+        // logger.i(e.toString());
       }
     } else { //! probably work for only windows ???
       Uint8List fileByte = await File(selectedFile!.path!).readAsBytes();
@@ -66,50 +65,28 @@ class ClientApi {
       List<dynamic> info = jsonDecode(response.body);
       String body = response.body;
       int statusCode = response.statusCode;
-      logger.i("$statusCode : $body");
+      // logger.i("$statusCode : $body");
       return info;
     } catch (e) {
-      logger.e("error occur in getListFIles");
+      // logger.e("error occur in getListFIles");
       throw e.toString();      
     }
   }
 
   Future<void> deleteFile(String name) async {
     final Uri deleteApi = Uri.parse("$deletePathApi/$name");
-    http.Response response = await http.get(deleteApi);
-    try {
-      String body = response.body;
-      int statusCode = response.statusCode;
-      logger.i("$statusCode : $body");
-    } catch (e) {
-      logger.e("error occur in deleteFile");
-      throw e.toString();
-    }
+    http.Response response = await http.delete(deleteApi);
+    // try {
+      // String body = response.body;
+      // int statusCode = response.statusCode;
+      // logger.i("$statusCode : $body");
+    // } catch (e) {
+      // logger.e("error occur in deleteFile");
+      // throw e.toString();
+    // }
   }
 
-
-
-  // Future<void> downloadFile(String fileName) async {
-  //     final Uri downloadApi = Uri.parse("$downloadPathApi/$fileName");
-  //     final response = await http.get(downloadApi);
-
-  //     try {
-  //       if (response.statusCode == 202){
-  //         final directory = await path_provider.getDownloadsDirectory();
-  //         final filePath = '${directory!.path}/$fileName';
-  //         final file = File(filePath);
-  //         await file.writeAsBytes(response.bodyBytes);
-  //         logger.i('File downloaded: $filePath');
-  //       } else {
-  //         logger.e('Failed to download file: ${response.statusCode}');
-  //       }
-  //     } catch (e) {
-  //       logger.e("error occur on downloadFIle");
-  //       throw e.toString();
-  //     }
-  // }
-
-  Future<void> fileSaver(String fileName) async {
+  Future<void> downloadFile(String fileName) async {
     try {
       LinkDetails ld = LinkDetails(
         link: "$downloadPathApi/$fileName", 
@@ -119,9 +96,8 @@ class ClientApi {
         name: fileName,
         link: ld
       );
-      logger.i("downloading : $fileName : $x");
     } catch (e) {
-      logger.e(e.toString());
+      // logger.e(e.toString());
     }
   }
 
