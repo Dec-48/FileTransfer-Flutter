@@ -12,7 +12,7 @@ Honestly, I just want to make my life easier (really ?) when sending or receivin
 ## Spring Boot
 I just wanted to experiment with an older tech stack, but it turned out to be much better than I expected—rich libraries and great readability!
 Okay, I gotta be honest, I didn't do good on the security . File locking is about all I got covered for downloads and deletes.
-[https://github.com/Dec-48/FileTransfer-SpringBoot_Prototype]
+[https://github.com/Dec-48/FileTransfer-SpringBoot]
 
 ## Disclaimer
 I found a WebRTC file transfer app on GitHub and the Play Store. Seeing it published 
